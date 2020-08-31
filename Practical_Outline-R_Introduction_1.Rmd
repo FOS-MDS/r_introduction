@@ -2,9 +2,7 @@
 title: "R_Practical_1_Answers"
 author: "Lucy Sinke"
 date: "20 October 2019"
-output: 
-  md_document:
-    variant: gfm
+output: pdf_document
 ---
 
 ***
