@@ -1,0 +1,196 @@
+---
+title: "Introduction to R: Practical 1"
+author: 'Lucy Sinke'
+date: '9/2/2020'
+output: html_document
+---
+
+# Introduction to R: Practical 1
+
+### R Markdown
+
+Throughout this course, you will use R markdown documents, enabling you to reproducibly create reports of your work. Each document is composed of a series of chunks. **This** is a plain text chunk, but other types can be added using the Insert menu in the top bar. Here, you can also save your document and Knit it to various formats. 
+
+Formatting R Markdown documents can help improve readability. For example, you can create *italic* font with `*italic*` and **bold** font with `**bold**`. Headers can be established by prefixing them with a number of `#` characters on a new line, and horizontal lines can be drawn using `***`.
+
+***
+
+### Overview of the Course
+
+All packages that you need during the course should be already installed on the RStudio Cloud. If, however, you find a package is not then use the following commands for CRAN and Bioconductor, respectively:
+
+```{r eval=FALSE}
+install.packages('<package name>')     # CRAN
+
+install.packages('BiocManager')        # Bioconductor
+BiocManager::install('<package name>')
+```
+
+You can see all the packages you have installed at any time by running the `installed.packages()` function.
+
+```{r eval=FALSE}
+installed.packages()
+```
+
+***
+
+Before each lesson, please run the `Practical-Launch` R markdown document, which will load in any required packages and datasets. Do this now, for this lesson:
+
+* Click `Practical-Launch_R-Introduction.Rmd` in the file browser (bottom right of the RStudio IDE)
+* Place your cursor at the bottom of the document and run all chunks with `Ctrl+Alt+P`
+
+Remember to do this whenever you restart an Assignment.
+
+*** 
+
+Once you have run the launch script, open the `Practical-Outline` R markdown document. This is where you will carry out the practical, filling in the code required to answer the questions.
+
+When you have finished the practical, you can knit it using `Ctrl+Shift+K`. Output can be either an `html_document` or a `pdf_document`, and you can save the file locally in order to turn it in.
+
+Knitting periodically throughout the practical will enable you to check your document, and individual chunks of code can be run either using the play button on the top right or `Ctrl+Shift+Enter`. Single lines of code can be run by placing your cursor on that line and hitting `Ctrl+Enter`.
+
+***
+
+### Example Data
+
+During this introductory course, we will use data from the Framingham Heart study [BioLINCC](https://biolincc.nhlbi.nih.gov/home/). This has information on the characteristics of 4434 indivdiuals alongside indicators of diabetes and myocardial infarction.  
+
+During any lesson, you can use `ls()` or look in the top right Environment pane to see what objects have been loaded by `Practical-Launch`.
+
+You can take a look at the FHS data using the `head()` function.
+
+
+```{r echo=FALSE}
+load('../data/Practical-Data-FHS_R-Introduction.Rdata')
+```
+
+```{r}
+head(fhs)
+```
+
+If, during an assignment, you find that the required data is not loaded by `Practical-Launch`, you can load it yourself using the `load` command. All used datasets should be stored in the `/data` folder. 
+
+As an example, to reload the FHS data we would use:
+
+```{r eval=FALSE}
+load('./data/Practical-Data-FHS_R-Introduction.Rdata')
+```
+
+***
+
+### The Basics 
+
+Data science involves transforming, modelling, and visualizing data to answer questions about its underlying patterns. Tools, like R, can help you perform science reproducibly and efficiently, but require learning other skills, like programming and statistics. Teaching you the basics of Programming in R is the aim of this Introductory lesson.
+
+In programming, you define and combine variables to represent the aspects of the data that you are interested in. This involves using a variety of operators, such as:
+
+* `<-` is R's assignment operator, used to assign values to variables
+* `+`, `-`, `*`, and `/` are mathematical operators for addition, subtraction, multiplication, and division in R
+* Functions, such as `sqrt()`, `abs()` and `sum()` can also be used to transform variables
+* `>`, `<`, `<=`, `>=`, `==`, and `!=` are relational operators in R
+
+Briefly, we show the use of these basic operators below.
+
+```{r}
+a <- 4
+b <- 7
+
+c <- b * sqrt(a)
+c
+```
+
+If you need help using a function, you can use the `?`. For example, what does the `args` function show us?
+
+```{r eval=FALSE}
+?args
+```
+
+***
+
+Some functions have multiple arguments or options, which must be defined using `=` within the function call. For example, the `log` function has a `base` option that defaults to `exp(1)` to calculate natural logarithms. 
+
+##### Exercise A
+
+1. How would we change the options to instead find the base 10 logarithm of a number?
+
+2. Does the order of arguments matter to a function? How does explicitly using argument names affect this?
+
+3. What does the `seq` function do? Use it to find the sum of the first 100 positive integers. 
+
+***
+
+### Data Types
+ 
+Variables in R can be different types. Numeric variables contain numbers, like the variables we defined above. You can inspect a variable's type using the `class()` function.
+
+```{r}
+class(a)
+```
+
+String variables contain character strings, and values can be defined using either the single `'` or double `"` quotes.
+
+```{r}
+d <- 'apple'
+class(d)
+```
+
+Lastly, logical variables take the values `TRUE` or `FALSE`. They are often created using the relational operators mentioned above.
+
+```{r}
+e <- class(d) == 'numeric'
+e
+class(e)
+```
+
+***
+
+Often, we want to store a series of values together in a vector variable. These can be created using the `c()` function, and have their own class.
+
+```{r}
+f <- c(a, b, c)
+f
+class(f)
+```
+
+If we want to combine multiple vector variables into a table, such as storing people's age and sex together, we can use a `data.frame`. You will be working with data frames a lot in R.
+
+```{r}
+class(fhs)
+```
+
+In order to get a good overview of a data frame, we can use the `str()` function, and to access a specific variable (column) we use the accessor operator, `$`. You can see that all of the variables in our data are either numeric or factors.
+
+```{r}
+str(fhs)
+head(fhs$age)
+```
+
+Factors are a special data type for storing categorical variables. Several variables in the `fhs` data frame are stored as factors. Categories of factor variables can be inspected using the `levels()` function.
+
+```{r}
+levels(fhs$sex)
+```
+
+***
+
+
+### Tidy Data
+
+The example data is tidy. What this means is that each column represents a variable, and each row is an observation. Many packages in R expect this format, and you will save a lot of time in your work if you always ensure that data you work with is tidy too.
+
+### Subsetting
+
+### Which
+
+### Summary Statistics
+
+max
+min
+mean
+median
+
+### Xtabs
+
+prop.table(xtabs(formula))
+
+
