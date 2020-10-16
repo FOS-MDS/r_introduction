@@ -1,13 +1,9 @@
 ---
-title: "Introduction to R: Practical 1"
-author: 'Lucy Sinke'
-date: '9/2/2020'
+title: 'Introduction to R: Practical 1'
 output: html_document
 ---
 
-# Introduction to R: Practical 1
-
-### R Markdown
+## 1.01 | R Markdown
 
 Throughout this course, you will use R markdown documents, enabling you to reproducibly create reports of your work. Each document is composed of a series of chunks. **This** is a plain text chunk, but other types can be added using the Insert menu in the top bar. Here, you can also save your document and Knit it to various formats. 
 
@@ -15,15 +11,14 @@ Formatting R Markdown documents can help improve readability. For example, you c
 
 ***
 
-### Overview of the Course
+## 1.02 | Overview of the Course
 
 All packages that you need during the course should be already installed on the RStudio Cloud. If, however, you find a package is not then use the following commands for CRAN and Bioconductor, respectively:
 
 ```{r eval=FALSE}
 install.packages('<package name>')     # CRAN
 
-install.packages('BiocManager')        # Bioconductor
-BiocManager::install('<package name>')
+BiocManager::install('<package name>') # Bioconductor
 ```
 
 You can see all the packages you have installed at any time by running the `installed.packages()` function.
@@ -34,82 +29,118 @@ installed.packages()
 
 ***
 
-Before each lesson, please run the `Practical-Launch` R markdown document, which will load in any required packages and datasets. Do this now, for this lesson:
+When you start a practical, open the `Practical-Instructions` document. This will walk you through the practical, with code chunks you can copy and paste to help you answer the questions. 
 
-* Click `Practical-Launch_R-Introduction.Rmd` in the file browser (bottom right of the RStudio IDE)
-* Place your cursor at the bottom of the document and run all chunks with `Ctrl+Alt+P`
-
-Remember to do this whenever you restart an Assignment.
-
-*** 
-
-Once you have run the launch script, open the `Practical-Outline` R markdown document. This is where you will carry out the practical, filling in the code required to answer the questions.
-
-When you have finished the practical, you can knit it using `Ctrl+Shift+K`. Output can be either an `html_document` or a `pdf_document`, and you can save the file locally in order to turn it in.
+When you have finished the practical, you can knit it using `Ctrl+Shift+K`. Output can be either an `html_document` or a `pdf_document`, and you can save the file locally in order to turn it in to Brightspace.
 
 Knitting periodically throughout the practical will enable you to check your document, and individual chunks of code can be run either using the play button on the top right or `Ctrl+Shift+Enter`. Single lines of code can be run by placing your cursor on that line and hitting `Ctrl+Enter`.
 
 ***
 
-### Example Data
+## 1.03 | Example Data
 
 During this introductory course, we will use data from the Framingham Heart study [BioLINCC](https://biolincc.nhlbi.nih.gov/home/). This has information on the characteristics of 4434 indivdiuals alongside indicators of diabetes and myocardial infarction.  
 
-During any lesson, you can use `ls()` or look in the top right Environment pane to see what objects have been loaded by `Practical-Launch`.
-
-You can take a look at the FHS data using the `head()` function.
-
+You can load in and take a look at the FHS data using the `head()` function.
 
 ```{r echo=FALSE}
-load('../data/Practical-Data-FHS_R-Introduction.Rdata')
+load('./data/data_fhs.Rdata')
 ```
 
 ```{r}
 head(fhs)
 ```
 
-If, during an assignment, you find that the required data is not loaded by `Practical-Launch`, you can load it yourself using the `load` command. All used datasets should be stored in the `/data` folder. 
+During any lesson, you can use `ls()` or look in the top right Environment pane to see what objects have been loaded.
 
-As an example, to reload the FHS data we would use:
-
-```{r eval=FALSE}
-load('./data/Practical-Data-FHS_R-Introduction.Rdata')
+```{r}
+ls()
 ```
 
 ***
 
-### The Basics 
+## 1.04 | RStudio
+
+You can see that the `fhs` object has been loaded into the **Environment** pane in the *top right* section of Rstudio.
+
+In the *bottom right* section of RStudio are some very useful tabs. **Files** displays the content of the project, including the `/data` directory mentioned in the lecture.
+
+***
+
+And **Plots** that you create can be viewed here, and you can browse through your plot history with the `Forward` and `Back` buttons.
+
+The `tidyverse` package is a collection of popular R packages that can be installed together. It contains packages like `ggplot2` for creating graphics, and `dplyr` which we will use today for data manipulation.
+
+A list of currently installed packages is shown in the **Packages** tab. The functions contained within this tab can be loaded into R using the `library()` command.
+
+***
+
+Now, let's load `tidyverse`:
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+We will use this package later in the practical. After loading a package into R, the functions inside become available for use.
+
+***
+
+Lastly, the **Help** tab can be used to view documentation on any loaded function. `Tab` can be used as autocomplete in R, but can also be used to browse options for completion. Find help on the `mean` function.
+
+```{r eval=FALSE}
+?mean
+```
+
+***
+
+## 1.05 | The Basics 
 
 Data science involves transforming, modelling, and visualizing data to answer questions about its underlying patterns. Tools, like R, can help you perform science reproducibly and efficiently, but require learning other skills, like programming and statistics. Teaching you the basics of Programming in R is the aim of this Introductory lesson.
 
 In programming, you define and combine variables to represent the aspects of the data that you are interested in. This involves using a variety of operators, such as:
 
-* `<-` is R's assignment operator, used to assign values to variables
-* `+`, `-`, `*`, and `/` are mathematical operators for addition, subtraction, multiplication, and division in R
-* Functions, such as `sqrt()`, `abs()` and `sum()` can also be used to transform variables
-* `>`, `<`, `<=`, `>=`, `==`, and `!=` are relational operators in R
+***
 
-Briefly, we show the use of these basic operators below.
+`<-` is R's assignment operator, used to assign values to variables
 
 ```{r}
 a <- 4
 b <- 7
-
-c <- b * sqrt(a)
-c
-```
-
-If you need help using a function, you can use the `?`. For example, what does the `args` function show us?
-
-```{r eval=FALSE}
-?args
 ```
 
 ***
 
+Variables can be removed using `rm()`.
+
+```{r}
+ls()
+rm(b)
+ls()
+```
+
+***
+
+`+`, `-`, `*`, and `/` are mathematical operators for addition, subtraction, multiplication, and division in R
+
+```{r}
+x <- 1 + 1
+x
+```
+
+***
+
+Functions, such as `sqrt()`, `abs()` and `sum()` can also be used to transform variables
+
+```{r}
+c <- x * sqrt(a)
+c
+```
+
 Some functions have multiple arguments or options, which must be defined using `=` within the function call. For example, the `log` function has a `base` option that defaults to `exp(1)` to calculate natural logarithms. 
 
-##### Exercise A
+***
+
+### Exercise A
 
 1. How would we change the options to instead find the base 10 logarithm of a number?
 
@@ -119,13 +150,15 @@ Some functions have multiple arguments or options, which must be defined using `
 
 ***
 
-### Data Types
+## 1.06 | Data Types
  
 Variables in R can be different types. Numeric variables contain numbers, like the variables we defined above. You can inspect a variable's type using the `class()` function.
 
 ```{r}
 class(a)
 ```
+
+***
 
 String variables contain character strings, and values can be defined using either the single `'` or double `"` quotes.
 
@@ -134,7 +167,9 @@ d <- 'apple'
 class(d)
 ```
 
-Lastly, logical variables take the values `TRUE` or `FALSE`. They are often created using the relational operators mentioned above.
+***
+
+Lastly, logical variables take the values `TRUE` or `FALSE`. They are often created using relational operators. `>`, `<`, `<=`, `>=`, `==`, and `!=` are relational operators in R.
 
 ```{r}
 e <- class(d) == 'numeric'
@@ -144,53 +179,396 @@ class(e)
 
 ***
 
+## 1.07 | Vectors
+
 Often, we want to store a series of values together in a vector variable. These can be created using the `c()` function, and have their own class.
 
 ```{r}
-f <- c(a, b, c)
-f
-class(f)
+y <- c(5, 6, 7)
+y
+class(y)
 ```
 
-If we want to combine multiple vector variables into a table, such as storing people's age and sex together, we can use a `data.frame`. You will be working with data frames a lot in R.
+***
+
+You can perform calculations on elements of a vector, using the same operators and functions you saw above.
+
+```{r}
+y + x
+y * 3
+y ^ 2
+```
+
+***
+
+You can also sum the elements of a vector using `sum()`, view the maximum value using `max()`, or return the number of elements using `length()`. Additionally, vectors can be reversed using `rev()`.
+
+```{r}
+sum(y)
+max(y)
+length(y)
+rev(y)
+```
+
+***
+
+You can select specific values from a vector using square brackets. A sequence of values can be defined with `:`. Values can also be added to currently defined vectors using `c()`.
+
+```{r}
+y[1]
+y[2:3]
+c(y, 8)
+y[-3]
+```
+
+***
+
+Some functions can help you explore the nature of stored variables.
+
+```{r}
+str(y)
+class(y)
+```
+
+***
+
+In this case, `y` is a numeric class object. A vector can also contain other classes of data.
+
+```{r}
+z <- c('a', 'b', 'c')
+z
+c(z, 'd')
+class(z)
+```
+
+***
+
+For character class objects, `nchar()` can be used to count the number of letters.
+
+```{r}
+d
+nchar(d)
+```
+
+***
+
+Logical vectors can be used to subset other vectors.
+
+```{r}
+w <- c(T, T, F)
+z[w]
+y[y == 6]
+z[z != 'a']
+y[y > 5]
+```
+
+***
+
+### Exercise B
+
+Obtains the following vectors using the variables you have created. There are multiple ways to do this, but you only need to give one of them in your answers.
+
+1. `7`
+2. `'a', 'c'`
+3. `5, 7, 9`
+4. `'c', 'b', 'a'`
+
+***
+
+## 1.08 | Data Frames
+
+If we want to combine multiple vector variables into a table, such as storing people's age and sex together, we can use a `data.frame`. This type of object is comparable to a spreadsheet. You will be working with data frames a lot in R.
 
 ```{r}
 class(fhs)
 ```
 
-In order to get a good overview of a data frame, we can use the `str()` function, and to access a specific variable (column) we use the accessor operator, `$`. You can see that all of the variables in our data are either numeric or factors.
+***
+
+In order to get a good overview of a data frame, we can use the `str()` or `summary()` functions. 
 
 ```{r}
 str(fhs)
-head(fhs$age)
+summary(fhs)
 ```
 
-Factors are a special data type for storing categorical variables. Several variables in the `fhs` data frame are stored as factors. Categories of factor variables can be inspected using the `levels()` function.
+***
+
+You can view the dimensions of a data frame
+
+```{r}
+nrow(fhs)
+ncol(fhs)
+dim(fhs)
+```
+
+From looking at the above, we can see that this data frame contains 4434 observations of 12 variables. The first 11 variables represent values measured at baseline (e.g. `sex`, `age`), and the last variable, `mi`, represents whether of not the individual had suffered a myocardial infarction at 24 years after baseline.
+
+***
+
+You can also see that all of the variables in our data are either numeric or factors. Factors are a special data type for storing categorical variables. Several variables in the `fhs` data frame are stored as factors. Categories of factor variables can be inspected using the `levels()` function.
 
 ```{r}
 levels(fhs$sex)
 ```
 
+
+The example data is **tidy**. What this means is that each column represents a variable, and each row is an observation. Many packages in R expect this format, and you will save a lot of time in your work if you always ensure that data you work with is tidy too.
+
 ***
 
+## 1.09 | Data Manipulation Basics
 
-### Tidy Data
+Let's create an example data frame using the `data.frame()` function.
 
-The example data is tidy. What this means is that each column represents a variable, and each row is an observation. Many packages in R expect this format, and you will save a lot of time in your work if you always ensure that data you work with is tidy too.
+```{r}
+df <- data.frame(y, z)
+df
+```
 
-### Subsetting
+***
 
-### Which
+You can add row names and columns names to a data frame using `rownames()` and `colnames()`
 
-### Summary Statistics
+```{r}
+rownames(df) <- c('row1', 'row2', 'row3')
+colnames(df) <- c('col1', 'col2')
+df
+```
 
-max
-min
-mean
-median
+*** 
 
-### Xtabs
+You can subset data frames
 
-prop.table(xtabs(formula))
+```{r}
+df[1, ]
+df[, 1]
+df[1, 1]
+df$col1
+df[df$col1 > 5, ]
+```
 
+***
+
+Extra columns can be added to a data frame
+
+```{r}
+df$col3 <- w
+df
+```
+
+Adding extra rows requires the `rbind()` function, and for values of the new row to be of the correct class
+
+```{r}
+new_row <- data.frame(col1 = 8, col2 = 'd', col3 = F, row.names='row4')
+df <- rbind(df, new_row)
+df
+```
+
+***
+
+### Exercise C
+
+1. Add a column with the name `col4` to data frame `df` with the values `1, 1, 1, 1`
+2. Subset `df` to show only columns `col1` and `col2` and rows `row2` and `row3`
+3. Calculate the sum of `col1`
+4. Change the row names of the data frame to `W`, `X`, `Y`, and `Z`
+
+***
+
+## 1.10 | Real Data
+
+We loaded in data from the Framingham Heart Study into `fhs` earlier, and looked briefly at it's structure. However, this data, and many datasets you will come across contains missing values. 
+
+```{r}
+sum(is.na(fhs))
+```
+
+***
+
+There are 642 missing values in the data. While there are various methods to handle these, we will look only at complete cases in this instance by removing observations with missing values.
+
+```{r}
+fhs <- fhs[complete.cases(fhs), ]
+sum(is.na(fhs))
+```
+
+***
+
+A very useful concept in R is the `formula`. This is specified as `lhs ~ rhs`, where the left-hand side is typically a dependent variable, and the right-hand side represents the independent variables, combined using `+`
+
+```{r}
+f <- y ~ x + z
+class(f)
+```
+
+***
+
+We can make use of formulae and create tables of the variables in our data using `xtabs()` and `prop.table()`
+
+```{r}
+xtabs(~mi, fhs)
+prop.table(xtabs(~mi, fhs))
+xtabs(~mi + sex, fhs)
+xtabs(~mi, fhs[fhs$age > 50, ])
+```
+
+***
+
+### Exercise D
+
+1. Make a table of current smoking status
+2. Make a proportion table of BP medication
+3. Make a table showing the number of smokers for each education level
+
+***
+
+## 1.11 | Data Manipulation with `dplyr`
+
+As mentioned above `dplyr` is a `tidyverse` package that is frequently used for data summary and transformation. `dplyr` code is often more intuitive to read and use than base R packages for data manipulation.
+
+This package contains a number of functions, which we will introduce one by one and then combine.
+
+***
+
+The `select()` function allows you to subset specific columns out of a dataset, similar to subsetting introduced above.
+
+```{r}
+fhsBP <- select(fhs, sys_bp, dia_bp, bp_meds)
+head(fhsBP)
+```
+
+***
+
+You can also perform negative indexing, using the `-` operator.
+
+```{r}
+fhsCOV <- select(fhs, -mi)
+head(fhsCOV)
+```
+
+***
+
+You can select a range of columns using the `:` operator, or use the `contains()` function to find all columns containing a specific word or combination of letters.
+
+```{r}
+fhsBP <- select(fhs, contains('bp'))
+head(fhsBP)
+```
+
+This can come in very useful when subsetting data frames. Other useful functions include `starts_with()` and `ends_with()`, for column name prefixes and suffixes respectively.
+
+***
+
+In a similar manner to subsetting columns, `filter()` can be used to filter observations or rows.
+
+```{r}
+fhsBMI40 <- filter(fhs, bmi >= 40)
+head(fhsBMI40)
+```
+
+Here, we can quickly see the individuals who are morbidly obese in our data set. A `,` can be used as a logical AND between filters. Perhaps we are interested in girls who are current smokers.
+
+```{r}
+fhsSmokeF <- filter(fhs, sex == 'Female', smoke == 'Yes')
+head(fhsSmokeF)
+```
+
+***
+
+The pipe operator `%>%` is commonly used by `dplyr` and pipes output from one function to another. Instead of nesting functions, which can be difficult to read at a glance, `dplyr` instead pipes them.
+
+Here, we pipe our data frame to the `filter()` function, and then show the result using `head`:
+
+```{r}
+fhs %>%
+  filter(smoke == 'Yes', bmi < 20) %>%
+  head
+```
+
+***
+
+To re-order rows by a particular columns values, you can use the `arrange()` function. Perhaps you want to have a look at the youngest individuals in your data frame.
+
+```{r}
+fhs %>%
+  arrange(age) %>%
+  head
+```
+
+You can look at the oldest observations by using the `desc()` function inside `arrange()`.
+
+```{r}
+fhs %>%
+  arrange(desc(age)) %>%
+  head
+```
+
+***
+
+Sometimes, you would like to create new columns as a function of the existing ones. In this instance, `mutate()` comes in handy.
+
+To create a column for pulse pressure, we use the difference between systolic and diastolic blood pressure.
+
+```{r}
+fhs %>%
+  mutate(pp = sys_bp - dia_bp) %>%
+  select(pp, sys_bp, dia_bp) %>%
+  arrange(desc(pp)) %>%
+  head
+```
+
+
+Combining `mutate()` with `ifelse()` can help create helpful binary variables. 
+
+The syntax of the `ifelse()` statement is `ifelse` (`condition`, `value if TRUE`, `value if FALSE`). So, below we create a new variable `hypo` that takes the value `1` if `glu` is 70 or less, and `0` otherwise.
+
+If you want to use multiple conditions within `ifelse()`, you can use the `&` and `|` operators.
+
+```{r}
+fhs %>%
+  filter(diabetes == 'Yes') %>%
+  mutate(hypo = ifelse(glu <= 70,1,0)) %>%
+  select(diabetes, glu, hypo) %>%
+  head
+```
+
+Hopefully, you can start to see how using `dplyr` can help you get to know your data.
+
+***
+
+As well as manipulating data, you may also want to `summarise()` it. This can make exploring the distribution of variables very intuitive.
+
+```{r}
+fhs %>%
+  summarise(tc_avg = mean(tc),
+            tc_min = min(tc),
+            tc_max = max(tc),
+            total_n = n())
+```
+
+Multiple summary statistics are available, including `sd()`, `median()`, and `sum()`.
+
+It can be really useful to combine functions with `group_by()`, which splits the data frame, performs the function, and then  combines the output. Here, we show the above output grouped by education level.
+
+```{r}
+fhs %>%
+  group_by(edu) %>%
+    summarise(tc_avg = mean(tc),
+            tc_min = min(tc),
+            tc_max = max(tc),
+            total_n = n())
+```
+
+***
+
+#### Exercise E
+
+1. What is the sex and smoking status of the youngest diabetic?
+2. What is the average systolic blood pressure of smokers who currently take blood pressure medication? 
+3. For diabetics who experienced MI, what is their mean age, BMI, and glucose level?
+4. How many obese smokers are in each education category? Do you notice a trend?
+5. Now look at the total number of people in each education category alongside the percentage who are obese smokers. Is there a trend now?
+
+***
 

@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R: Basic Functionality"
+title: "Introduction to R: Practical 2"
 output: html_document
 ---
 
@@ -7,18 +7,16 @@ We continue from yesterday by exploring the relationship between variables, both
 
 ***
 
-## Part 1: Introduction to ggplot2
+## 2.01 | Introduction to `ggplot2`
 
 First, we must load in the dataset again, keeping only complete cases.
 
 ```{r}
-fhs <- read.csv(url("https://raw.githubusercontent.com/molepi/Molecular-Data-Science/master/RIntro_practical/data.csv"))
+load('./data/data_fhs.Rdata')
 fhs <- fhs[complete.cases(fhs), ]
-fhs$MI <- factor(fhs$MI, levels=c('No', 'Yes'))
 ```
 
-We should also set our library location and load in the `tidyverse` package.
-
+We should also load in the `tidyverse` package.
 
 ```{r warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -32,7 +30,7 @@ The `ggplot()` function alone just initializes a blank plot. You can specify you
 
 ```{r}
 fhs %>%
-  ggplot(aes(BMI, GLUCOSE))
+  ggplot(aes(bmi, glu))
 ```
 
 ***
@@ -41,7 +39,7 @@ Titles can be specified by adding `ggtitle()` to the `ggplot()` function with th
 
 ```{r}
 fhs %>%
-  ggplot(aes(BMI, GLUCOSE)) +
+  ggplot(aes(bmi, glu)) +
   ggtitle("Graph of BMI against Glucose levels") +
   xlab("BMI (kg/m^2)") +
   ylab("Glucose level (mg/dL")
@@ -58,7 +56,7 @@ Additionally, `alpha`, `colour`, and `fill` options can specify the appearance o
 ```{r}
 fhs %>%
   ggplot() +
-  geom_bar(aes(EDUC), alpha=0.7, colour='grey30', fill='cadetblue2') +
+  geom_bar(aes(edu), alpha=0.7, colour='grey30', fill='cadetblue2') +
   ggtitle("Bar plot of Education levels") + 
   xlab("Education level") 
 ```
@@ -70,7 +68,7 @@ Bars can be coloured by other variables to see the distribution of one category 
 ```{r}
 fhs %>%
   ggplot() +
-  geom_bar(aes(EDUC, fill=SEX), alpha=0.7, colour='grey30') +
+  geom_bar(aes(edu, fill=sex), alpha=0.7, colour='grey30') +
   ggtitle("Bar plot of sex within Education levels") + 
   xlab("Education level") 
 ```
@@ -81,9 +79,9 @@ Subsetting, as shown yesterday with `dplyr` can also be piped into `ggplot()`. W
 
 ```{r}
 fhs %>%
-  filter(MI == 'Yes') %>%
+  filter(mi == 'Yes') %>%
   ggplot() +
-  geom_bar(aes(EDUC, fill=SEX), alpha=0.7, colour='grey30') +
+  geom_bar(aes(edu, fill=sex), alpha=0.7, colour='grey30') +
   ggtitle("Bar plot of sex within Education levels") + 
   xlab("Education level") 
 ```
@@ -94,9 +92,9 @@ To view bars side-by-side instead of stacked, set `position` to `dodge`.
 
 ```{r}
 fhs %>%
-  filter(MI == 'Yes') %>%
+  filter(mi == 'Yes') %>%
   ggplot() +
-  geom_bar(aes(EDUC, fill=SEX), alpha=0.7, colour='grey30', position="dodge") +
+  geom_bar(aes(edu, fill=sex), alpha=0.7, colour='grey30', position="dodge") +
   ggtitle("Bar plot of sex within Education levels") + 
   xlab("Education level") 
 ```
@@ -108,7 +106,7 @@ For continuous variables, we divide the x axis into bins and visualize using `ge
 ```{r}
 fhs %>%
   ggplot() +
-  geom_histogram(aes(AGE), binwidth=2, alpha=0.7, colour='grey30', fill='cadetblue3') +
+  geom_histogram(aes(age), binwidth=2, alpha=0.7, colour='grey30', fill='cadetblue3') +
   ggtitle("Histogram of age distribution") +
   xlab("Age (years)")
 ```
@@ -120,8 +118,8 @@ To show the distribution of a continuous variable within categories, you can use
 ```{r}
 fhs %>%
   ggplot() +
-  geom_histogram(aes(AGE), binwidth=2, alpha=0.7, colour='grey30', fill='cadetblue3') +
-  facet_wrap(~EDUC) +
+  geom_histogram(aes(age), binwidth=2, alpha=0.7, colour='grey30', fill='cadetblue3') +
+  facet_wrap(~edu) +
   ggtitle("Histogram of age distribution within education levels") +
   xlab("Age (years)")
 ```
@@ -133,7 +131,7 @@ In order to show a smoothed version of a histogram, a density plot, we use `geom
 ```{r}
 fhs %>%
   ggplot() +
-  geom_density(aes(SYSBP), alpha=0.7, colour='grey30', fill='cadetblue2') +
+  geom_density(aes(sys_bp), alpha=0.7, colour='grey30', fill='cadetblue2') +
   ggtitle("Density plot of systolic blood pressure") +
   xlab("Systolic BP (mmHg)")
 ```
@@ -145,7 +143,7 @@ If you want to look at a variable's distribution between groups, use the `fill` 
 ```{r}
 fhs %>%
   ggplot() +
-  geom_density(aes(SYSBP, fill=BPMEDS), alpha=0.7, colour='grey30') +
+  geom_density(aes(sys_bp, fill=bp_meds), alpha=0.7, colour='grey30') +
   ggtitle("Density plot of systolic blood pressure within BP medication status") +
   xlab("Systolic BP (mmHg)")
 ```
@@ -157,30 +155,30 @@ This will show the distributions separately, but you can also stack them with a 
 ```{r}
 fhs %>%
   ggplot() +
-  geom_density(aes(SYSBP, fill=BPMEDS), alpha=0.7, colour='grey30', position="stack") +
+  geom_density(aes(sys_bp, fill=bp_meds), alpha=0.7, colour='grey30', position="stack") +
   ggtitle("Density plot of systolic blood pressure within BP medication status") +
   xlab("Systolic BP (mmHg)")
 ```
 
 ***
 
-#### Question 1: Make the following:
+### Exercise F
 
-* A bar plot of MI, coloured by smoking status
-* A histogram of total cholesterol in overweight individuals
-* Four density plots of age for each education level
-* Two bar plots of sex in current and non-smokers for those who experienced MI
+1. A bar plot of MI, coloured by smoking status
+2. A histogram of total cholesterol in overweight individuals
+3. Four density plots of age for each education level
+4. Two bar plots of sex in current and non-smokers for those who experienced MI
 
 ***
 
-## Part 2: Comparative Plots
+## 2.02 | Comparative Plots
 
 A scatter plot can be a good way to compare two continuous variables. In `ggplot` this is implemented using `geom_point()`.  
 
 ```{r}
 fhs %>%
   ggplot() +
-  geom_point(aes(SYSBP, DIABP), alpha=0.7) +
+  geom_point(aes(sys_bp, dia_bp), alpha=0.7) +
   ggtitle("Scatter plot of Systolic BP against Diastolic BP") +
   xlab("Systolic BP (mmHg)") +
   ylab("Diastolic BP (mmHg)")
@@ -193,7 +191,7 @@ Reference lines can be added to plots using `geom_vline()`, `geom_hline()`, and 
 ```{r}
 fhs %>%
   ggplot() +
-  geom_point(aes(SYSBP, DIABP), alpha=0.7) +
+  geom_point(aes(sys_bp, dia_bp), alpha=0.7) +
   geom_vline(aes(xintercept=160), colour='red', size=1.5, alpha=0.7) +
   ggtitle("Scatter plot of Systolic BP against Diastolic BP") +
   xlab("Systolic BP (mmHg)") +
@@ -208,12 +206,12 @@ You can also use the `cut()` function alongside `seq()` to create categorical va
 ```{r}
 fhs %>%
   ggplot() +
-  geom_point(aes(SYSBP, DIABP), alpha=0.7) +
+  geom_point(aes(sys_bp, dia_bp), alpha=0.7) +
   geom_vline(aes(xintercept=160), colour='red', size=1.5, alpha=0.7) +
   ggtitle("Scatter plot of Systolic BP against Diastolic BP") +
   xlab("Systolic BP (mmHg)") +
   ylab("Diastolic BP (mmHg)") +
-  facet_wrap( ~ cut(AGE,seq(30,70,10)))
+  facet_wrap( ~ cut(age,seq(30,70,10)))
 ```
 
 ***
@@ -223,7 +221,7 @@ To show the distribution of a continuous variable across categories, you can use
 ```{r}
 fhs %>%
   ggplot() +
-  geom_boxplot(aes(CURSMOKE, BMI), colour='grey30', fill='cadetblue2') +
+  geom_boxplot(aes(smoke, bmi), colour='grey30', fill='cadetblue2') +
   ggtitle("Distribution of BMI within smoking status") +
   xlab("Current smoking status") +
   ylab("BMI (kg/m^2)")
@@ -236,7 +234,7 @@ If you want to view a horizontal boxplot, you can use `coord_fip()`. Outliers ca
 ```{r}
 fhs %>%
   ggplot() +
-  geom_boxplot(aes(CURSMOKE, BMI), colour='grey30', fill='cadetblue2', outlier.color='palegreen3', outlier.shape=1) + 
+  geom_boxplot(aes(smoke, bmi), colour='grey30', fill='cadetblue2', outlier.color='palegreen3', outlier.shape=1) + 
   coord_flip() +
   ggtitle("Distribution of BMI within smoking status") +
   xlab("Current smoking status") +
@@ -250,7 +248,7 @@ Finally, box plots can also be split by a further category using the `fill` or `
 ```{r}
 fhs %>%
   ggplot() +
-  geom_boxplot(aes(CURSMOKE, BMI, fill=SEX), colour='grey30', outlier.colour='palegreen3', outlier.shape=1) + 
+  geom_boxplot(aes(smoke, bmi, fill=sex), colour='grey30', outlier.colour='palegreen3', outlier.shape=1) + 
   coord_flip() +
   ggtitle("Distribution of BMI within smoking status") +
   xlab("Current smoking status") +
@@ -259,21 +257,21 @@ fhs %>%
 
 ***
 
-#### Question 2: Make the following:
+### Exercise G
 
-* A scatter plot of glucose levels against BMI, coloured by diabetes status.
-* A horizontal box plot of sex by systolic BP for people over the age of 60
-* A scatter plot of total cholesterol against glucose for categories of BMI
+1. A scatter plot of glucose levels against BMI, coloured by diabetes status.
+2. A horizontal box plot of sex by systolic BP for people over the age of 60
+3. A scatter plot of total cholesterol against glucose for categories of BMI
 
 ***
 
-## Part 3: Statistical Tests
+## 2.03 | Statistical Tests
 
 Next we will perform some statistical tests. Sometimes, it can be helpful to save tables so that they can be used in other functions.
 
 ```{r}
-SMOKE_MI <- xtabs(~CURSMOKE+MI, fhs)
-SMOKE_MI
+smoke_mi <- xtabs(~smoke+mi, fhs)
+smoke_mi
 ```
 
 ***
@@ -281,7 +279,7 @@ SMOKE_MI
 Then, we can use this table in a chi-square test, to see if there is a significant association between smoking status and MI.
 
 ```{r}
-chisq <- chisq.test(SMOKE_MI)
+chisq <- chisq.test(smoke_mi)
 chisq
 ```
 
@@ -298,7 +296,7 @@ Visualizations can often inform future statistical investigations. Perhaps, the 
 We can use `cor.test` to test if the correlation between two variables is significant.
 
 ```{r}
-cor <- cor.test(~ SYSBP + DIABP, fhs) 
+cor <- cor.test(~ sys_bp + dia_bp, fhs) 
 cor
 ```
 
@@ -309,7 +307,7 @@ This shows that we have significant evidence from our data that systolic and dia
 The box plot shown above might suggest that older individuals are more likely to have experienced MI. We can formally test this using a t-test.
 
 ```{r}
-tt <- t.test(AGE ~ MI, fhs) 
+tt <- t.test(age ~ mi, fhs) 
 tt
 ```
 
@@ -320,7 +318,7 @@ This test concludes that we have sufficient evidence to suggest a significant di
 To run logistic regression in R, you use the `glm()` function, specifying the `family` as binomial. To explore the fit, use the `summary()` function.
 
 ```{r}
-glmfit <- glm(MI ~ BMI + AGE + SEX, fhs, family = "binomial") 
+glmfit <- glm(mi ~ bmi + age + sex, fhs, family = "binomial") 
 summary(glmfit)
 ```
 
@@ -336,7 +334,7 @@ Here, we can see that the odds of MI for males is 3.3 times higher than for fema
 
 ***
 
-#### Question 3:
+### Exercise H
 
 * Is age correlated with total cholesterol?
 * Do diabetics have significantly different glucose levels compared to non-diabetics?
@@ -344,7 +342,7 @@ Here, we can see that the odds of MI for males is 3.3 times higher than for fema
 
 ***
 
-## Part 4: Loops 
+## 2.04 | Loops
 
 Although R uses vectorized operations, it can sometimes still be useful to utilise loops and conditional statements. This is particularly the case inside functions, where different instructions need to be carried out depending on the input.
 
@@ -356,9 +354,9 @@ The following code demonstrates how this can be implemented to create an indicat
 
 ```{r}
 fhs %>%
-  mutate(UNDER = ifelse(BMI <= 20, 1, 0)) %>%
-  select(UNDER, BMI, SEX, AGE) %>%
-  arrange(AGE) %>%
+  mutate(under = ifelse(bmi <= 20, 1, 0)) %>%
+  select(under, bmi, sex, age) %>%
+  arrange(age) %>%
   head
 ```
 
@@ -422,15 +420,15 @@ while(x < 5) {
 
 ***
 
-#### Question 4: Write the following:
+### Exercise I
 
-* A loop that returns the square of the first 3 elements in a vector
-* A loop that prints each column name from the FHS dataset, alongside the number of characters in that name
-* A loop that tells you at what integer the product of all previous positive integers is over 5 million
+1. A loop that returns the square of the first 3 elements in a vector
+2. A loop that prints each column name from the FHS dataset, alongside the number of characters in that name
+3. A loop that tells you at what integer the product of all previous positive integers is over 5 million
 
 ***
 
-## Part 5: Writing your own functions
+## 2.05 | Writing Your Own Functions
 
 There are many instances in which you may want to write your own function in R. If you continuously use the same chunk of code, it can be easier to implement in a function for use later.
 
@@ -489,18 +487,20 @@ Functions can get increasingly complicated. The following function performs logi
 ```{r}
 logisticAllMI <- function(x) {
   results <- data.frame()
-  fhsCov <- select(x, -MI)
+  fhsCov <- select(x, -mi)
   
   for (i in colnames(fhsCov)) {
-    fit <- glm(MI ~ get(i), x, family = "binomial")
-    results <- rbind(results, summary(fit)$coefficients[2, , drop=F])
+    fit <- glm(mi ~ get(i), x, family = "binomial")
+    results <- rbind(results, data.frame(summary(fit)$coefficients)[2, ])
   }
   
-  results <- cbind(Covarite = colnames(fhsCov), results)
+  results <- cbind(colnames(fhsCov), results)
+  colnames(results) <- c('Covariate', 'Estimate', 'SE', 'z', 'p')
+  results[, -1] <- round(results[ , -1], 3)
   
   results %>%
-    mutate(OR = exp(results$Estimate)) %>%
-    arrange(`Pr(>|z|)`) %>%
+    mutate(OR = round(exp(results$Estimate),3)) %>%
+    arrange(p) %>%
     print
 }
 ```
@@ -513,16 +513,14 @@ logisticAllMI(fhs)
 
 ***
 
-#### Question 5: Make the following:
+### Exercise J
 
-* A function that takes x, y and z as arguments and returns their product.
-* A function that returns the correlation of all variables in the FHS data with BMI.
-* A function that associates all variables in the FHS data with age (hint: use `lm` instead of `glm`)
+1. A function that takes x, y and z as arguments and returns their product.
+2. A function that returns the correlation of all variables in the FHS data with BMI.
+3. A function that associates all variables in the FHS data with age (hint: use `lm` instead of `glm`)
 
 ***
 
 You have just written a few simple functions, but hopefully you can see how complicated they could become. You can do so many things in R, and new functions are being written all the time, but you can always also create your own.
-
-See you after lunch!
 
 ***
