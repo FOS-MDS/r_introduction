@@ -178,12 +178,11 @@ class(e)
 
 ## 1.07 | Vectors
 
-Often, we want to store a series of values together in a vector variable. These can be created using the `c()` function, and have their own class.
+Often, we want to store a series of values together in a vector variable. These can be created using the `c()` function.
 
 ```{r}
 y <- c(5, 6, 7)
 y
-class(y)
 ```
 
 ***
@@ -263,7 +262,7 @@ y[y > 5]
 
 ### Exercise B
 
-Obtains the following vectors using the variables you have created. There are multiple ways to do this, but you only need to give one of them in your answers.
+Obtain the following vectors using the variables you have created. There are multiple ways to do this, but you only need to give one of them in your answers.
 
 1. `7`
 2. `'a', 'c'`
