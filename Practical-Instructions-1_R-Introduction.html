@@ -390,7 +390,8 @@ BiocManager::install(&#39;&lt;package name&gt;&#39;) # Bioconductor</code></pre>
 <h2>1.03 | Example Data</h2>
 <p>During this introductory course, we will use data from the Framingham Heart study <a href="https://biolincc.nhlbi.nih.gov/home/">BioLINCC</a>. This has information on the characteristics of 4434 indivdiuals alongside indicators of diabetes and myocardial infarction.</p>
 <p>You can load in and take a look at the FHS data using the <code>head()</code> function.</p>
-<pre class="r"><code>head(fhs)</code></pre>
+<pre class="r"><code>load(&#39;./data/data_fhs.Rdata&#39;)
+head(fhs)</code></pre>
 <pre><code>##      sex age   bmi edu smoke bp_meds sys_bp dia_bp  tc glu diabetes  mi
 ## 1   Male  39 26.97   4    No      No  106.0     70 195  77       No Yes
 ## 2 Female  46 28.73   2    No      No  121.0     81 250  76       No  No

@@ -43,11 +43,8 @@ During this introductory course, we will use data from the Framingham Heart stud
 
 You can load in and take a look at the FHS data using the `head()` function.
 
-```{r echo=FALSE}
-load('./data/data_fhs.Rdata')
-```
-
 ```{r}
+load('./data/data_fhs.Rdata')
 head(fhs)
 ```
 
