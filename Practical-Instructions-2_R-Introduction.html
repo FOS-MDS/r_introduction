@@ -366,7 +366,7 @@ summary {
 </div>
 
 
-<p>We continue from yesterday by exploring the relationship between variables, both with visualisations and statistical tests. Don’t forget to turn your R scripts into the Blackboard.</p>
+<p>We continue from yesterday by exploring the relationship between variables, both with visualisations and statistical tests. Don’t forget to turn your knitted R markdown documents into Brightspace.</p>
 <hr />
 <div id="introduction-to-ggplot2" class="section level2">
 <h2>2.01 | Introduction to <code>ggplot2</code></h2>
@@ -376,7 +376,7 @@ fhs &lt;- fhs[complete.cases(fhs), ]</code></pre>
 <p>We should also load in the <code>tidyverse</code> package.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <hr />
-<p>The package <code>ggplot2</code> is commonly used to produce visualisations of data. The plots will appear in the <strong>Plots</strong> pane, you can save them using the Export button if you would like.</p>
+<p>The package <code>ggplot2</code> is commonly used to produce visualisations of data.</p>
 <p>The <code>ggplot()</code> function alone just initializes a blank plot. You can specify your x and y axis using <code>aes()</code>, but no lines or points will be drawn. You can pipe your data to <code>ggplot()</code> using <code>%&gt;%</code> or specify it as the first argument.</p>
 <pre class="r"><code>fhs %&gt;%
   ggplot(aes(bmi, glu))</code></pre>
@@ -636,10 +636,11 @@ summary(glmfit)</code></pre>
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <p>This returns the estimate, standard errors, z-score, and p-values for each of the coefficients. Here, we have strong evidence (p&lt;0.001) that higher BMI is associated with an increased risk of MI, after adjusting for age and sex.</p>
 <p>To calculate the OR, we take the exponent of the coefficients.</p>
-<pre class="r"><code>exp(coef(glmfit))</code></pre>
+<pre class="r"><code>or &lt;- exp(coef(glmfit))
+or</code></pre>
 <pre><code>## (Intercept)         bmi         age   sexFemale 
 ## 0.007085533 1.061466118 1.046414460 0.302422154</code></pre>
-<p>Here, we can see that the odds of MI for males is 3.3 times higher than for females, after adjusting for BMI and age.</p>
+<p>Here, we can see that the odds of MI increase by 6% for each unit increase in BMI, after adjusting for age and sex.</p>
 <hr />
 <div id="exercise-h" class="section level3">
 <h3>Exercise H</h3>
@@ -714,6 +715,7 @@ while(x &lt; 5) {
 <hr />
 <div id="exercise-i" class="section level3">
 <h3>Exercise I</h3>
+<p>Create the following:</p>
 <ol style="list-style-type: decimal">
 <li>A loop that returns the square of the first 3 elements in a vector</li>
 <li>A loop that prints each column name from the FHS dataset, alongside the number of characters in that name</li>
@@ -798,10 +800,11 @@ printSign(1)</code></pre>
 <hr />
 <div id="exercise-j" class="section level3">
 <h3>Exercise J</h3>
+<p>Write the following:</p>
 <ol style="list-style-type: decimal">
 <li>A function that takes x, y and z as arguments and returns their product.</li>
 <li>A function that returns the correlation of all variables in the FHS data with BMI.</li>
-<li>A function that associates all variables in the FHS data with age (hint: use <code>lm</code> instead of <code>glm</code>)</li>
+<li>A function that associates all variables in the FHS data with age (you can use <code>lm</code> instead of <code>glm</code>)</li>
 </ol>
 <hr />
 <p>You have just written a few simple functions, but hopefully you can see how complicated they could become. You can do so many things in R, and new functions are being written all the time, but you can always also create your own.</p>

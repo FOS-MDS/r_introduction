@@ -3,7 +3,7 @@ title: "Introduction to R: Practical 2"
 output: html_document
 ---
 
-We continue from yesterday by exploring the relationship between variables, both with visualisations and statistical tests. Don't forget to turn your R scripts into the Blackboard.
+We continue from yesterday by exploring the relationship between variables, both with visualisations and statistical tests. Don't forget to turn your knitted R markdown documents into Brightspace.
 
 ***
 
@@ -24,7 +24,7 @@ library(tidyverse)
 
 ***
 
-The package `ggplot2` is commonly used to produce visualisations of data. The plots will appear in the **Plots** pane, you can save them  using the Export button if you would like.
+The package `ggplot2` is commonly used to produce visualisations of data.
 
 The `ggplot()` function alone just initializes a blank plot. You can specify your x and y axis using `aes()`, but no lines or points will be drawn. You can pipe your data to `ggplot()` using `%>%` or specify it as the first argument.
 
@@ -327,10 +327,11 @@ This returns the estimate, standard errors, z-score, and p-values for each of th
 To calculate the OR, we take the exponent of the coefficients.
 
 ```{r}
-exp(coef(glmfit))
+or <- exp(coef(glmfit))
+or
 ```
 
-Here, we can see that the odds of MI for males is 3.3 times higher than for females, after adjusting for BMI and age.
+Here, we can see that the odds of MI increase by 6% for each unit increase in BMI, after adjusting for age and sex.
 
 ***
 
@@ -421,6 +422,8 @@ while(x < 5) {
 ***
 
 ### Exercise I
+
+Create the following:
 
 1. A loop that returns the square of the first 3 elements in a vector
 2. A loop that prints each column name from the FHS dataset, alongside the number of characters in that name
@@ -515,9 +518,11 @@ logisticAllMI(fhs)
 
 ### Exercise J
 
+Write the following:
+
 1. A function that takes x, y and z as arguments and returns their product.
 2. A function that returns the correlation of all variables in the FHS data with BMI.
-3. A function that associates all variables in the FHS data with age (hint: use `lm` instead of `glm`)
+3. A function that associates all variables in the FHS data with age (you can use `lm` instead of `glm`)
 
 ***
 
