@@ -300,7 +300,8 @@ Genome-wide association studies (GWAS) are systematically represented in the EMB
 
 ```{r warning=F, message=F}
 library(gwascat)
-ebicat37 <- makeCurrentGwascat(genome = 'GRCh37')
+data(ebicat37)
+ebicat37 <- ebicat37
 ```
 
 Per GWAS finding, there is one range, and each corresponds to a SNP that has been replicated as significantly associated with the given phenotype.
@@ -309,12 +310,6 @@ The genome here is listed as `GRCh37`, which is very similar to `hg19`. To avoid
 
 ```{r}
 genome(ebicat37) <- 'hg19'
-```
-
-Also we need to add `chr` to the `seqnames` to make this object compatible with `hg`
-
-```{r}
-seqlevels(ebicat37) <- str_c('chr',seqlevels(ebicat37))
 ```
 
 
